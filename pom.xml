@@ -101,4 +101,22 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <repositories>
+  	<repository>
+		<id>github</id>
+		<name>GitHub g-gar Apache Maven Packages</name>
+		<url>https://maven.pkg.github.com/g-gar/</url>
+	</repository>
+	<repository>
+		<id>clojars</id>
+		<name>clojars</name>
+		<url>https://repo.clojars.org/</url>
+	</repository>
+	<repository>
+		<id>maven</id>
+		<name>maven</name>
+		<url>https://repo1.maven.org/maven2/</url>
+	</repository>
+  </repositories>
 </project>
