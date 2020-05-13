@@ -24,7 +24,7 @@ public abstract class AbstractController extends HBox implements Controller, Ini
 		HBox root = null;
 		try {
 			root = loader.load();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			this.scene = new Scene(root);

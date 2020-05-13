@@ -15,10 +15,6 @@ public class AbstractConnectionPool implements ConnectionPool {
 	private final Container container;
 	
 	public AbstractConnectionPool(Container container) {
-		this(container, Runtime.getRuntime().availableProcessors());
-	}
-	
-	public AbstractConnectionPool(Container container, int maxAvailableConnections) {		
 		this.container = container;
 		this.connections = null;
 	}

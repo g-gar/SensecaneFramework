@@ -34,6 +34,7 @@ public class DaoUtils {
 				rsmd = rs.getMetaData();
 				columnCount = rsmd.getColumnCount();
 				fields = Arrays.asList(clazz.getDeclaredFields());
+				
 				while (rs.next()) {
 					parameters = new Object[columnCount];
 					parameterClasses = new Class[columnCount];
@@ -48,6 +49,10 @@ public class DaoUtils {
 							case "java.math.BigDecimal": 
 								temp = "java.lang.Double";
 								parameters[i-1] = Double.valueOf(rs.getString(i));
+								break;
+							case "java.math.BigInteger": 
+								temp = "java.lang.Long";
+								parameters[i-1] = Long.valueOf(rs.getString(i));
 								break;
 							default:
 								parameters[i-1] = rs.getObject(i);

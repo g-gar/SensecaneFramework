@@ -9,8 +9,4 @@ public class MariaDBConnectionPool extends AbstractConnectionPool {
 		super(container);
 	}
 
-	public MariaDBConnectionPool(Container container, int maxAvailableConnections) {
-		super(container, maxAvailableConnections);
-	}
-
 }
