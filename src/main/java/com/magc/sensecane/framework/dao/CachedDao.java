@@ -80,7 +80,7 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 		
 		columns.stream().forEach(f -> {
 			Column col = f.getDeclaredAnnotation(Column.class);
-			sb.append(col.name());
+			sb.append(col.value());
 			sb.append(columns.indexOf(f) < columns.size() - 1 ? ", " : " ");
 		});
 		
@@ -146,7 +146,7 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 				Column col = f.getDeclaredAnnotation(Column.class);
 				boolean accesible = f.isAccessible();
 				f.setAccessible(true);
-				sb.append(col.name())
+				sb.append(col.value())
 					.append(" = ")
 					.append(f.getType().equals(String.class)?"'":"")
 					.append(entity!=null
@@ -163,7 +163,7 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 			}
 		});
 		sb.append("where ")
-			.append(pk.getDeclaredAnnotation(Column.class).name())
+			.append(pk.getDeclaredAnnotation(Column.class).value())
 			.append(" = ")
 			.append(entity.getId());
 		
@@ -188,7 +188,7 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 	public T remove(T entity) {
 		T result = null;
 		
-		String sql = String.format("delete from %s where %s = ?", entity.getTablename(), entity.getPrimaryKeyColumn().name());
+		String sql = String.format("delete from %s where %s = ?", entity.getTablename(), entity.getPrimaryKeyColumn().value());
 		Connection connection = pool.get();
 		try (PreparedStatement ps = connection.prepareStatement(sql)) {
 			ps.setInt(1, entity.getId());
@@ -218,7 +218,7 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 	
 	@Override
 	public void truncate() {
-		String sql = String.format("truncate %s", clazz.getDeclaredAnnotationsByType(Table.class)[0].name());
+		String sql = String.format("truncate %s", clazz.getDeclaredAnnotationsByType(Table.class)[0].value());
 		Connection connection = pool.get();
 		try (PreparedStatement ps = connection.prepareStatement(sql)) {
 			ps.executeUpdate();
@@ -230,7 +230,7 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 	}
 
 	public void reloadCache() {
-		String sql = String.format("select * from %s", clazz.getDeclaredAnnotationsByType(Table.class)[0].name());
+		String sql = String.format("select * from %s", clazz.getDeclaredAnnotationsByType(Table.class)[0].value());
 		Connection connection = pool.get();
 		try (PreparedStatement ps = connection.prepareStatement(sql)) {
 			ResultSet rs = ps.executeQuery();

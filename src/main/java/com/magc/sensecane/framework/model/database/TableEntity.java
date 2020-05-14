@@ -29,7 +29,7 @@ public abstract class TableEntity<T> extends BaseEntity {
 	}
 	
 	public String getTablename() {
-		return this.table.name();
+		return this.table.value();
 	}
 
 	public Column getPrimaryKeyColumn() {

@@ -33,5 +33,23 @@ public class Filters {
 	public static Filter addCorsHeader = (request, response) -> {
 	    response.header("Access-Control-Allow-Origin", "*");
 	};
+	
+	public static Filter acceptJson = (request, response) -> {
+		response.header("Accept", "application/json");
+	};
+	
+	public static Filter returnsJson = (request, response) -> {
+		response.header("Content-Type", "application/json");
+	};
+	
+	public static Filter postAcceptsJson = (request, response) -> {
+		if (request.requestMethod().equals("POST")) {
+			acceptJson.handle(request, response);
+		}
+	};
+	
+	public static Filter setContentlength = (request, response) -> {
+		response.header("Content-Length", "" + response.body().length());
+	};
 
 }
