@@ -149,7 +149,12 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 				sb.append(col.name())
 					.append(" = ")
 					.append(f.getType().equals(String.class)?"'":"")
-					.append(f.get(entity).toString())
+					.append(entity!=null
+						? f.get(entity) != null 
+							? f.get(entity).toString()
+							: null
+						: null
+					)
 					.append(f.getType().equals(String.class)?"'":"")
 					.append(columns.indexOf(f) < columns.size() - 1 ? ", " : " ");
 				f.setAccessible(accesible);
