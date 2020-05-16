@@ -1,6 +1,5 @@
 package com.magc.sensecane.framework.spark;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,9 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.magc.sensecane.framework.container.Container;
 
 import spark.Request;
@@ -35,7 +31,7 @@ public abstract class AbstractPostRoute<T> extends AbstractRoute<T> {
 	public Map<String, String> getParams(Request request, String...keys) throws JsonMappingException, JsonProcessingException {
 		Map<String, String> p = new HashMap<String, String>();
 		JsonNode node = new ObjectMapper().readTree(request.body());
-		String value;
+
 		for (String key : keys) {
 			if (node.has(key)) {
 				p.put(key, node.get(key).asText());

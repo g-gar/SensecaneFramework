@@ -2,9 +2,8 @@ package com.magc.sensecane.framework.spark;
 
 import java.util.logging.Logger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.magc.sensecane.framework.container.Container;
+import com.magc.sensecane.framework.model.json.PreSerializedJson;
 
 import spark.Request;
 import spark.Response;
@@ -21,16 +20,25 @@ public abstract class AbstractRoute<T> implements Route {
 	
 	public abstract Boolean isValidRequest(Request request, Response response) throws Exception;
 	
-	public <T> String toJson(T param) {
-		String str = null;
+	@Override
+	public String handle(Request request, Response response) {
+		PreSerializedJson<T> result = null;
 		
 		try {
-			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-			str = ow.writeValueAsString(param);
+			if (isValidRequest(request, response)) {
+				result = this.serve(request, response);
+				response.status(200);
+				response.type("application/json");
+			} else {
+				throw new Exception("Invalid request");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		
-		return str;
+		return result.toString();
 	}
+
+	public abstract PreSerializedJson<T> serve(Request request, Response response) throws Exception;
 }

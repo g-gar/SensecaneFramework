@@ -4,11 +4,16 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PreSerializedJson<V> implements Map<String, Object> {
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.magc.sensecane.framework.model.database.TableEntity;
+
+public class PreSerializedJson<T> implements Map<String, Object> {
 
 	private Map<String, Object> results;
 	
@@ -16,17 +21,32 @@ public class PreSerializedJson<V> implements Map<String, Object> {
 		results = new HashMap<String, Object>();
 	}
 	
-	public PreSerializedJson(V obj) {
+	public PreSerializedJson(T obj) {
 		this(obj, new String[0]);
 	}
 	
-	public PreSerializedJson(V obj, String...excludedFields) {
-		results = new HashMap<String, Object>();
+	public PreSerializedJson(T obj, String...fields) {
+		results = extractParams(obj, fields);
+	}
 		
-		List<String> excluded = Arrays.asList(excludedFields);
+	public PreSerializedJson(Collection<T> obj, String...fields) {
+		results = new HashMap<String, Object>() {
+			{
+				int i = 0;
+				for (final Iterator<T> it = obj.iterator(); it.hasNext();) {
+					put(""+(i++), extractParams(it.next(), fields));
+				}
+			}
+		};
+	}
+	
+	public Map<String, Object> extractParams(T obj, String...fields) {
+		Map<String, Object> results = new HashMap<String, Object>();
+		List<String> excluded = Arrays.asList(fields);
 		boolean accesible;
+		
 		for (Field field : obj.getClass().getDeclaredFields()) {
-			if (!excluded.contains(field.getName())) {
+			if (excluded.contains(field.getName()) || (fields.length==1 && fields[0].equals("*"))) {
 				try {
 					accesible = field.isAccessible();
 					field.setAccessible(true);
@@ -37,6 +57,7 @@ public class PreSerializedJson<V> implements Map<String, Object> {
 				}
 			}
 		}
+		return results;
 	}
 
 	@Override
@@ -99,4 +120,17 @@ public class PreSerializedJson<V> implements Map<String, Object> {
 		return results.entrySet();
 	}
 
+	@Override
+	public String toString() {
+		String str = null;
+		
+		try {
+			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+			str = ow.writeValueAsString(results);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return str;
+	}
 }

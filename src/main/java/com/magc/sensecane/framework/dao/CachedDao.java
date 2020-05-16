@@ -28,10 +28,6 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 	protected final Map<Integer, T> cache;
 	protected Class<T> clazz;
 	
-	public CachedDao(ConnectionPool pool) {
-		this(pool, (Class<T>) TableEntity.class);
-	}
-	
 	public CachedDao(ConnectionPool pool, Class<T> clazz) {
 		this.pool = pool;
 		this.cache = new ConcurrentHashMap<Integer, T>();
