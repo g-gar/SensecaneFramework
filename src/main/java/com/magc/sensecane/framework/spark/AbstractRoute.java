@@ -22,6 +22,9 @@ public abstract class AbstractRoute<T> implements Route {
 	
 	@Override
 	public String handle(Request request, Response response) {
+		
+		log.info(String.format("[%s] Requested %s", request.ip(), request.pathInfo()));
+		
 		PreSerializedJson<T> result = null;
 		
 		try {
