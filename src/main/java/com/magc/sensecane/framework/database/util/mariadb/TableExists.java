@@ -4,10 +4,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import com.magc.sensecane.framework.database.MariaDBConnectionProperties;
 import com.magc.sensecane.framework.database.util.ExecuteQuery;
 import com.magc.sensecane.framework.container.Container;
 import com.magc.sensecane.framework.database.connection.properties.ConnectionProperties;
+import com.magc.sensecane.framework.database.implementation.mariadb.MariaDBConnectionProperties;
 import com.magc.sensecane.framework.utils.AbstractUtil;
 import com.magc.sensecane.framework.utils.Util;
 

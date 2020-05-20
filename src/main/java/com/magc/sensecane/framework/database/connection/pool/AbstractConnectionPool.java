@@ -44,7 +44,7 @@ public class AbstractConnectionPool implements ConnectionPool {
 				IntStream.range(0, maxAvailableConnections).forEach(i -> {
 					try {
 						add(factory.createConnection(properties));
-					} catch (SQLException e) {
+					} catch (SQLException | ClassNotFoundException e) {
 						e.printStackTrace();
 					}
 				});

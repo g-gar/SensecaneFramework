@@ -14,4 +14,6 @@ public interface Dao<T extends BaseEntity> {
 	List<T> removeAll();
 	void truncate();
 	
+	T insert(T entity);
+	T update(T entity);
 }

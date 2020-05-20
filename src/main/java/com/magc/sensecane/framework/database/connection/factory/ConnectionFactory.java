@@ -7,6 +7,6 @@ import com.magc.sensecane.framework.database.connection.properties.ConnectionPro
 
 public interface ConnectionFactory<T extends ConnectionProperties> {
 
-	Connection createConnection(T connectionProperties) throws SQLException;
+	Connection createConnection(T connectionProperties) throws SQLException, ClassNotFoundException;
 	
 }

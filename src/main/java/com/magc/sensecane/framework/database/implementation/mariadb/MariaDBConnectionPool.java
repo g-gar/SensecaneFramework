@@ -1,4 +1,4 @@
-package com.magc.sensecane.framework.database;
+package com.magc.sensecane.framework.database.implementation.mariadb;
 
 import com.magc.sensecane.framework.container.Container;
 import com.magc.sensecane.framework.database.connection.pool.AbstractConnectionPool;
