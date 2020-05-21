@@ -42,11 +42,11 @@ public class PreSerializedJson<T> implements Map<String, Object> {
 	
 	public Map<String, Object> extractParams(T obj, String...fields) {
 		Map<String, Object> results = new HashMap<String, Object>();
-		List<String> excluded = Arrays.asList(fields);
+		List<String> included = Arrays.asList(fields);
 		boolean accesible;
 		
 		for (Field field : obj.getClass().getDeclaredFields()) {
-			if (excluded.contains(field.getName()) || (fields.length==1 && fields[0].equals("*"))) {
+			if (included.contains(field.getName()) || (fields.length==1 && fields[0].equals("*"))) {
 				try {
 					accesible = field.isAccessible();
 					field.setAccessible(true);
