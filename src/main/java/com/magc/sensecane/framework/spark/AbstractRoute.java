@@ -40,7 +40,7 @@ public abstract class AbstractRoute<T> implements Route {
 			throw new RuntimeException(e);
 		}
 		
-		return result.toString();
+		return result != null ? result.toString() : null;
 	}
 
 	public abstract PreSerializedJson<T> serve(Request request, Response response) throws Exception;

@@ -24,7 +24,6 @@ public abstract class AbstractPostRoute<T> extends AbstractRoute<T> {
 			response.status(500);
 			throw new Exception(String.format("Not an HTTP POST request [%s]\n", request.matchedPath()));
 		}
-		
 		return true;
 	}
 	

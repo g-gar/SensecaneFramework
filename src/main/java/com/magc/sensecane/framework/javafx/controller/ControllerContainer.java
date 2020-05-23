@@ -4,4 +4,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ControllerContainer extends ConcurrentHashMap<Class<Controller>, Controller>{
 
+	public Controller current;
+	
 }
