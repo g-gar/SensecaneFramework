@@ -1,15 +1,14 @@
 package com.magc.sensecane.framework.spark;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.magc.sensecane.framework.container.Container;
 
 import spark.Request;
@@ -30,19 +29,24 @@ public abstract class AbstractPutRoute<T> extends AbstractRoute<T> {
 		
 		return true;
 	}
+	
+	public Map<String, String> getParams(Request request) throws JsonMappingException, JsonProcessingException {
+		return this.getParams(request, "*");
+	}
 
 	public Map<String, String> getParams(Request request, String...keys) throws JsonMappingException, JsonProcessingException {
 		Map<String, String> p = new HashMap<String, String>();
 		JsonNode node = new ObjectMapper().readTree(request.body());
-		String value;
-		for (String key : keys) {
-			if (node.has(key)) {
+		
+		List<String> keylist = Arrays.asList(keys);
+		node.fieldNames().forEachRemaining(key -> {
+			if ((keylist.size() == 1 && keylist.get(0).equals("*")) || keylist.contains(key) ) {
 				p.put(key, node.get(key).asText());
-			}
-			else {
+			} else {
 				throw new RuntimeException(new Exception(String.format("%s: request body does not contain parameter %s", request.pathInfo(), key)));
 			}
-		}
+		});
+		
 		return p;
 	}
 }
