@@ -22,11 +22,20 @@ public abstract class AbstractRoute<T> implements Route {
 	
 	@Override
 	public String handle(Request request, Response response) {
-		
-		log.info(String.format("[%s] Requested %s\nWith body: %s", request.ip(), request.pathInfo(), request.body().toString()));
+		log.info(String.format("[%s] Requested %s", request.ip(), request.pathInfo()));
 		PreSerializedJson<T> result = null;
 		
 		try {
+			if (this instanceof Authenticable) {
+				System.out.println(request.headers("Authorization"));
+				if (request.headers("Authorization") == null) {
+					if (!container.get(AuthenticationService.class).validate(request.headers("Authorization"))) {
+						throw new Exception("Invalid token");
+					}
+					throw new Exception("Not authenticated");
+				}
+			}
+			
 			if (isValidRequest(request, response)) {
 				result = this.serve(request, response);
 				response.status(200);
