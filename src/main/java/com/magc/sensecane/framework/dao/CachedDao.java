@@ -98,8 +98,6 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 		
 		sb.append(")");
 		
-		System.out.println(sb.toString());
-		
 		Connection connection = pool.get();
 		try(PreparedStatement ps = connection.prepareStatement(sb.toString(), Statement.RETURN_GENERATED_KEYS)) {
 			ps.executeUpdate();
@@ -127,8 +125,9 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			pool.release(connection);
 		}
-		pool.release(connection);
 		return result;
 	}
 	
@@ -162,8 +161,6 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 			.append(pk.getDeclaredAnnotation(Column.class).value())
 			.append(" = ")
 			.append(entity.getId());
-		
-		System.out.println(sb.toString());
 
 		Connection connection = pool.get();
 		try(PreparedStatement ps = connection.prepareStatement(sb.toString())) {
@@ -174,8 +171,9 @@ public abstract class CachedDao<T extends TableEntity<Integer>> extends ColumnIn
 			this.cache.put(entity.getId(), entity);
 		} catch (SQLException | InstanceNotFoundException e) {
 			e.printStackTrace();
+		} finally {
+			pool.release(connection);
 		}
-		pool.release(connection);
 		
 		return this.cache.get(entity.getId());
 	}
